@@ -99,8 +99,8 @@ services:
     restart: always
     volumes:
     - type: bind
-        source: ./config/prometheus.yml
-        target: /etc/prometheus/prometheus.yml
+      source: ./config/prometheus.yml
+      target: /etc/prometheus/prometheus.yml
     
   promtail:
     command: -config.file=/etc/promtail/promtail-config.yml
