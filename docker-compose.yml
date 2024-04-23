@@ -60,11 +60,11 @@ services:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     healthcheck:
-    test: ["CMD", "mc", "ready", "local"]
-    interval: 5s
-    timeout: 5s
-    retries: 5
-        networks:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
       loki: null
     ports:
     - published: 9000
