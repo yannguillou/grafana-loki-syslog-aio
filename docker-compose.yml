@@ -51,19 +51,23 @@ services:
     volumes:
     - ./config/loki-config-s3.yml:/etc/loki/loki-config.yml:ro
   minio:
-    image: quay.io/minio/minio:latest
-    command: server --console-address ":9001" http://minio{1...4}/data{1...2}
-    expose:
-      - "9000"
-      - "9001"
+       command: -c 'mkdir -p /data/loki && /usr/bin/docker-entrypoint.sh minio server /data'
+    container_name: minio
+    entrypoint: sh
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ACCESS_KEY: minio123
+      MINIO_PROMETHEUS_AUTH_TYPE: public
+      MINIO_SECRET_KEY: minio456
     healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      interval: 30s
+      retries: 3
+      test:
+      - CMD
+      - curl
+      - -f
+      - http://localhost:9000/minio/health/live
+      timeout: 20s
+    image: minio/minio:latest
     networks:
       loki: null
     ports:
